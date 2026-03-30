@@ -1,0 +1,1 @@
+Docker run  --name some-mysql -e MYSQL_ROOT_PASSWORD=123 -d -v ./sql:/docker-entrypoint-initdb.d -p 33306:3306 mysql:8.0 
