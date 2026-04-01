@@ -1,6 +1,6 @@
-CREATE DATABASE IF NOT EXISTS proyecto;
+CREATE DATABASE IF NOT EXISTS test;
 
-use proyecto;
+use test;
 
 CREATE TABLE IF NOT EXISTS habitantes (
 id_habitante  int auto_increment primary key,
