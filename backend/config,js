@@ -1,0 +1,15 @@
+import dotenv from 'dotenv'
+dotenv.config({ path: './.env' })
+
+export default {
+    db: {
+        name: process.env.BD_NOMBRE,
+        user: process.env.BD_USER,
+        pass: process.env.BD_PWD,
+        port: process.env.BD_PORT,
+    },
+
+    appPort: process.env.APP_PORT
+};
+
+

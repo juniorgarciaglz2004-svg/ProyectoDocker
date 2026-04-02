@@ -1,8 +1,9 @@
 import express from 'express'
 import usuarios from './rutas/usuarios.js'
+import config from './config,js'
 const app = express()
 
-const port = process.env.MIPUERTO || 3000
+
 
 app.use(express.json());
 
@@ -12,8 +13,8 @@ app.get('/', (req, res) => {
 })
 
 // parte base de datos
-app.use('/usuarios',usuarios)
+app.use('/usuarios', usuarios)
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+app.listen(config.appPort, () => {
+  console.log(`Example app listening on port ${config.appPort}`)
 })
