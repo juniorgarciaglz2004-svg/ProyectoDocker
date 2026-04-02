@@ -1,7 +1,10 @@
 import express from 'express'
+import usuarios from './rutas/usuarios.js'
 const app = express()
 
 const port = process.env.MIPUERTO || 3000
+
+app.use(express.json());
 
 // parte aplicacion
 app.get('/', (req, res) => {
@@ -9,9 +12,7 @@ app.get('/', (req, res) => {
 })
 
 // parte base de datos
-app.get('/db', (req, res) => {
-  res.send('base de datos!')
-})
+app.use('/usuarios',usuarios)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
