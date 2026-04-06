@@ -1,8 +1,11 @@
 import { Router } from 'express';
-
+import db from '../db.js'
 const router = Router();
 
-router.get('/', (req, res) => res.json([]));
+router.get('/', async (req, res) => {
+    const users = await db.getUsers();
+    res.json(users);
+});
 
 router.get('/:id', (req, res) => {
     const { id } = req.params;

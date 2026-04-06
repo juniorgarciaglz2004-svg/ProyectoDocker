@@ -4,6 +4,7 @@ dotenv.config({ path: './.env' })
 export default {
     db: {
         name: process.env.BD_NOMBRE,
+        host: process.env.BD_HOST,
         user: process.env.BD_USER,
         pass: process.env.BD_PWD,
         port: process.env.BD_PORT,
