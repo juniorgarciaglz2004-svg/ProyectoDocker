@@ -4,20 +4,26 @@
     "password": null,
     "database": "test",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "seederStorageTableName": "sequelizemeta",
+    "seederStorage": "sequelize"
   },
   "test": {
     "username": "root",
     "password": null,
     "database": "test",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "seederStorageTableName": "sequelizemeta",
+    "seederStorage": "sequelize"
   },
   "production": {
     "username": "root",
     "password": null,
     "database": "test",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "seederStorageTableName": "sequelizemeta",
+    "seederStorage": "sequelize"
   }
 }
