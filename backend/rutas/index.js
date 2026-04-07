@@ -1,10 +1,8 @@
 import { Router } from 'express';
-import db from '../servicios/db.js'
 const router = Router();
-// endpoint 
+
 router.get('/', async (req, res) => {
-    const users = await db.users.findAll();
-    res.json(users);
+    res.send('Bienvenidos a la API!!!')
 });
 
 export default router; 

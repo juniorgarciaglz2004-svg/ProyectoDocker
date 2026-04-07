@@ -16,9 +16,11 @@ try {
 } catch (error) {
   console.error('Unable to connect to the database:', error);
 }
-
-export default {
-  getUsers: async function() {
-    return User.findAll();
-  }
+const db = {
+  users: User(sequelize, Sequelize.DataTypes)
 }
+
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+
+export default db;

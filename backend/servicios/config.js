@@ -1,5 +1,12 @@
 import dotenv from 'dotenv'
-dotenv.config({ path: './.env' })
+import * as path from "node:path";
+
+const entorno = process.env.NODE_ENV || 'development';
+
+dotenv.config({
+    path: path.resolve(process.cwd(), `.env-${entorno}`),
+    quiet: true
+});
 
 export default {
     db: {
@@ -12,5 +19,7 @@ export default {
 
     appPort: process.env.APP_PORT
 };
+
+
 
 

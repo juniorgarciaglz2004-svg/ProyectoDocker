@@ -9,8 +9,8 @@
   "scripts": {
     "migrate": "npx sequelize-cli db:migrate",
     "seed": "npx sequelize-cli db:seed:all",
-    "start": "node ./app.js --env-file=.env",
-    "prod": "node ./app.js --env-file=.env-docker"
+    "start": "node ./app.js"
+    
   },
   "dependencies": {
     "dotenv": "^17.3.1",
