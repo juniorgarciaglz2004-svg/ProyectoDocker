@@ -1,5 +1,5 @@
 import express from 'express'
-import usuarios from './rutas/usuarios.js'
+import usuarios from './usuarios.js'
 import config from './config.js'
 import db from './db.js'
 const app = express()

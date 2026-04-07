@@ -1,6 +1,6 @@
 import config from './config.js'
 import { Sequelize } from 'sequelize';
-import User from './models/user.js'
+import User from '../database/models/user.js'
 
 const sequelize = new Sequelize(config.db.name, config.db.user, config.db.pass, {
   dialect: 'mysql',
