@@ -4,14 +4,15 @@ function Usuarios() {
   const [loading, setLoading] = useState(true)
   const [users, setUsers] = useState([]);
 
-useEffect(() => {
+  //remplazar con llamada al servidor para obtener datos
+  useEffect(() => {
     // Simulamos una llamada a una API de 2 segundos
     setTimeout(() => {
       const data = [
         { id: 1, firstName: "junior", lastName: "Garcia", email: "junior@home.es" },
         { id: 2, firstName: "novia", lastName: "quien sabe", email: "novia@home.es" },
       ];
-      
+
       setUsers(data);
       setLoading(false); // Finaliza la carga
     }, 2000);
@@ -22,7 +23,7 @@ useEffect(() => {
       <div style={{ textAlign: 'center', padding: '20px' }}>
         <InicioPagina />
         <div className="spinner"></div>
-        <FinPagina />  
+        <FinPagina />
       </div>
     );
   }
@@ -50,7 +51,7 @@ useEffect(() => {
           ))}
         </tbody>
       </table>
-      <FinPagina />      
+      <FinPagina />
     </div>
   )
 }
@@ -58,7 +59,7 @@ useEffect(() => {
 function InicioPagina() {
   return (
     <>
-    <h3>Listado de usuarios</h3>
+      <h3>Listado de usuarios</h3>
     </>
   )
 }
@@ -66,9 +67,9 @@ function InicioPagina() {
 function FinPagina() {
   return (
     <>
-     <p>&nbsp;</p>
-     <Link to="/">Regresar a inicio</Link>
-     </>
+      <p>&nbsp;</p>
+      <Link to="/">Regresar a inicio</Link>
+    </>
   )
 }
 
