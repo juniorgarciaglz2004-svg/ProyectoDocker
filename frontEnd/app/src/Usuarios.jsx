@@ -1,13 +1,74 @@
-import { useState } from 'react'
-import {Link} from "react-router";
+import { useState, useEffect } from 'react'
+import { Link } from "react-router";
 function Usuarios() {
-  const [count, setCount] = useState(0)
+  const [loading, setLoading] = useState(true)
+  const [users, setUsers] = useState([]);
+
+useEffect(() => {
+    // Simulamos una llamada a una API de 2 segundos
+    setTimeout(() => {
+      const data = [
+        { id: 1, firstName: "junior", lastName: "Garcia", email: "junior@home.es" },
+        { id: 2, firstName: "novia", lastName: "quien sabe", email: "novia@home.es" },
+      ];
+      
+      setUsers(data);
+      setLoading(false); // Finaliza la carga
+    }, 2000);
+  }, []);
+
+  if (loading) {
+    return (
+      <div style={{ textAlign: 'center', padding: '20px' }}>
+        <InicioPagina />
+        <div className="spinner"></div>
+        <FinPagina />  
+      </div>
+    );
+  }
 
   return (
-   <div>
-      <h1>usuarios</h1>
-       <Link to="/">Regresar a inicio</Link>
+    <div>
+      <InicioPagina />
+      <table border="1" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+        <thead>
+          <tr style={{ backgroundColor: '#f2f2f2' }}>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user) => (
+            <tr key={user.id}>
+              <td>{user.id}</td>
+              <td>{user.firstName}</td>
+              <td>{user.lastName}</td>
+              <td>{user.email}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <FinPagina />      
     </div>
+  )
+}
+
+function InicioPagina() {
+  return (
+    <>
+    <h3>Listado de usuarios</h3>
+    </>
+  )
+}
+
+function FinPagina() {
+  return (
+    <>
+     <p>&nbsp;</p>
+     <Link to="/">Regresar a inicio</Link>
+     </>
   )
 }
 
