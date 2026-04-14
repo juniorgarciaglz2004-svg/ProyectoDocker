@@ -10,9 +10,9 @@
     "migrate": "npx sequelize-cli db:migrate",
     "seed": "npx sequelize-cli db:seed:all",
     "start": "node ./app.js"
-    
   },
   "dependencies": {
+    "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "mysql2": "^3.20.0",
