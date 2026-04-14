@@ -4,18 +4,19 @@ function Usuarios() {
   const [loading, setLoading] = useState(true)
   const [users, setUsers] = useState([]);
 
-  //remplazar con llamada al servidor para obtener datos
+
+
   useEffect(() => {
-    // Simulamos una llamada a una API de 2 segundos
-    setTimeout(() => {
-      const data = [
-        { id: 1, firstName: "junior", lastName: "Garcia", email: "junior@home.es" },
-        { id: 2, firstName: "novia", lastName: "quien sabe", email: "novia@home.es" },
-      ];
+    async function obtenerDatos() {
+      const response = await fetch(import.meta.env.VITE_API_URL + "/usuarios")
+      const data = await response.json();
 
       setUsers(data);
-      setLoading(false); // Finaliza la carga
-    }, 2000);
+      setLoading(false);
+    }
+
+    obtenerDatos();
+
   }, []);
 
   if (loading) {
