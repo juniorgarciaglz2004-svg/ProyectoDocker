@@ -1,0 +1,33 @@
+services:
+
+  backend:
+    build: ./backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - bd
+    environment:
+      NODE_ENV: production      
+      APP_PORT: 3000
+      BD_NOMBRE: test
+      BD_USER: root
+      BD_PWD: 123
+      BD_HOST: bd
+      BD_PORT: 33306
+
+  bd:
+    container_name: some-mysql
+    image: mysql:8.0
+    ports:
+      - "33306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123
+    volumes:
+      - ./db/data:/var/lib/mysql
+      - ./db/sql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpass"]
+      interval: 10s      # Cada cuánto se ejecuta el check
+      timeout: 5s        # Tiempo máximo de espera por respuesta
+      retries: 5         # Intentos antes de marcar como unhealthy
+      start_period: 30s  # Tiempo de gracia al iniciar el contenedor
