@@ -5,7 +5,8 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - bd
+      bd:
+        condition: service_healthy
     environment:
       NODE_ENV: production      
       APP_PORT: 3000
@@ -13,7 +14,20 @@ services:
       BD_USER: root
       BD_PWD: 123
       BD_HOST: bd
-      BD_PORT: 33306
+      BD_PORT: 3306
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context:  ./frontend
+      args:
+        API_URL: http://backend:3000
+    ports:
+      - "8000:80"
+    depends_on:
+      - backend
+
+    restart: unless-stopped
 
   bd:
     container_name: some-mysql
@@ -26,8 +40,9 @@ services:
       - ./db/data:/var/lib/mysql
       - ./db/sql:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpass"]
-      interval: 10s      # Cada cuánto se ejecuta el check
-      timeout: 5s        # Tiempo máximo de espera por respuesta
-      retries: 5         # Intentos antes de marcar como unhealthy
-      start_period: 30s  # Tiempo de gracia al iniciar el contenedor
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p123"]
+      interval: 10s      
+      timeout: 5s        
+      retries: 5         
+      start_period: 30s  
+    restart: unless-stopped
