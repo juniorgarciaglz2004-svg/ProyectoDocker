@@ -7,7 +7,14 @@ import config from './servicios/config.js'
 const app = express()
 
 
-app.use(cors()) 
+app.use(cors({
+  origin: [
+    'http://localhost:5173',//Vite port
+    'http://localhost:8000'//Compose port
+  ],
+  credentials: true
+
+}))
 app.use(express.json())
 
 

@@ -3,16 +3,23 @@ import { Link } from "react-router";
 function Usuarios() {
   const [loading, setLoading] = useState(true)
   const [users, setUsers] = useState([]);
+  const [apiError, setApiError] = useState(false);
 
 
 
   useEffect(() => {
     async function obtenerDatos() {
-      const response = await fetch(import.meta.env.VITE_API_URL + "/usuarios")
-      const data = await response.json();
+      try {
+        const response = await fetch(import.meta.env.VITE_API_URL + "/usuarios")
+        const data = await response.json();
 
-      setUsers(data);
-      setLoading(false);
+        setUsers(data);
+        
+      } catch (error) {
+        console.error("Error al obtener los usuarios:", error);
+        setApiError(true);
+      }
+setLoading(false);
     }
 
     obtenerDatos();
@@ -24,6 +31,17 @@ function Usuarios() {
       <div style={{ textAlign: 'center', padding: '20px' }}>
         <InicioPagina />
         <div className="spinner"></div>
+        <FinPagina />
+      </div>
+    );
+  }
+
+
+  if (apiError) {
+    return (
+      <div style={{ textAlign: 'center', padding: '20px' }}>
+        <InicioPagina />
+        <div> Error en el acceso al api remoto</div>
         <FinPagina />
       </div>
     );
