@@ -4,18 +4,18 @@ services:
     container_name: backend
     build: ./backend
     ports:
-      - "3000:3000"
+      - "3000:${APP_PORT}"
     depends_on:
       bd:
         condition: service_healthy
     environment:
       NODE_ENV: production      
-      APP_PORT: 3000
-      BD_NOMBRE: test
-      BD_USER: root
-      BD_PWD: 123
+      APP_PORT: ${APP_PORT}
+      BD_NOMBRE: ${BD_NOMBRE}
+      BD_USER: ${BD_USER}
+      BD_PWD: ${BD_PASS}
       BD_HOST: bd
-      BD_PORT: 3306
+      BD_PORT: ${BD_PORT}
     networks:
       - private
       - public
@@ -28,7 +28,7 @@ services:
     build:
       context:  ./frontEnd
       args:
-        API_URL: http://localhost:3000
+        API_URL: http://localhost:${APP_PORT}
     ports:
       - "8000:80"
     depends_on:
@@ -43,14 +43,15 @@ services:
     container_name: bd
     image: mysql:8.0
     ports:
-      - "33306:3306"
+      - "33306:${BD_PORT}"
     environment:
-      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_ROOT_PASSWORD: ${BD_PASS}
     volumes:
       - ./db/data:/var/lib/mysql
       - ./db/sql:/docker-entrypoint-initdb.d
+      - ./db/backups:/backups
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p123"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${BD_PASS}"]
       interval: 10s      
       timeout: 5s        
       retries: 5         
@@ -60,6 +61,25 @@ services:
     memswap_limit: 1g
     networks:
       - private
+    labels:
+      ofelia.enabled: "true"
+      #ofelia.job-exec.backup.schedule: "0 */1 * * * *"
+      ofelia.job-exec.backup.schedule: "0 0 2 * * *"      
+      ofelia.job-exec.backup.command: "sh -c 'MYSQL_PWD=${BD_PASS} mysqldump -u ${BD_USER} ${BD_NOMBRE} > /backups/backup_$$(date +%Y%m%d_%H%M%S).sql'"
+
+  ofelia:
+    image: mcuadros/ofelia:latest
+    container_name: backup 
+    depends_on:
+        bd:
+          condition: service_healthy
+    command: daemon --docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - private
+
+
 
 networks:
   public:
