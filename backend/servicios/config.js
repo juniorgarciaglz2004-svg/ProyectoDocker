@@ -1,6 +1,7 @@
 import dotenv from 'dotenv'
 import * as path from "node:path";
 
+
 const entorno = process.env.NODE_ENV || 'development';
 
 dotenv.config({
@@ -17,7 +18,8 @@ export default {
         port: process.env.BD_PORT,
     },
 
-    appPort: process.env.APP_PORT
+    appPort: process.env.APP_PORT,
+    seguridad: {secretKey:"unsecreto",usuario:"demo",pass:"pass",expiresIn: "1h" }
 };
 
 

@@ -43,7 +43,7 @@ services:
     container_name: bd
     image: mysql:8.0
     ports:
-      - "33306:${BD_PORT}"
+     - "33306:${BD_PORT}"
     environment:
       MYSQL_ROOT_PASSWORD: ${BD_PASS}
     volumes:
@@ -63,8 +63,8 @@ services:
       - private
     labels:
       ofelia.enabled: "true"
-      #ofelia.job-exec.backup.schedule: "0 */1 * * * *"
-      ofelia.job-exec.backup.schedule: "0 0 2 * * *"      
+      ofelia.job-exec.backup.schedule: "0 */1 * * * *"
+      #ofelia.job-exec.backup.schedule: "0 0 2 * * *"      
       ofelia.job-exec.backup.command: "sh -c 'MYSQL_PWD=${BD_PASS} mysqldump -u ${BD_USER} ${BD_NOMBRE} > /backups/backup_$$(date +%Y%m%d_%H%M%S).sql'"
 
   ofelia:
@@ -78,6 +78,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - private
+    restart: unless-stopped  
 
 
 
