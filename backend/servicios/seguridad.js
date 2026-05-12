@@ -1,11 +1,25 @@
-import { json } from 'sequelize';
 import config from './config.js'
 import jwt from 'jsonwebtoken'
+import bcrypt from 'bcrypt'
+import db from './db.js'
 
+const esValidaCredencial = async (usuario, pass) => {
+    const credencial = await db.credenciales.findAll({
+        where: {
+            usuario: usuario,
+        },
+    });
 
+    if (!credencial || !credencial.length) {
+        return false;
+    }
+
+    const hash = credencial[0].pass;
+    return bcrypt.compare(pass, hash);
+}
 
 export default {
-    login: (usuario, pass) => {
+    login: async (usuario, pass) => {
         try {
             if (!usuario || !pass) {
                 return {
@@ -13,10 +27,12 @@ export default {
                     status: 400
                 };
             }
-            if (usuario === config.seguridad.usuario && pass === config.seguridad.pass) {
+            const esValida = await esValidaCredencial(usuario, pass);
+
+            if (esValida) {
                 const token = jwt.sign({ usuario }, config.seguridad.secretKey, { expiresIn: config.seguridad.expiresIn });
                 return {
-                    json: { token: token },
+                    json: { token, usuario },
                     status: 200
                 };
             } else {
@@ -52,7 +68,3 @@ export default {
         }
     }
 }
-
-
-
-

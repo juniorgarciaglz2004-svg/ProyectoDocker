@@ -1,6 +1,7 @@
 import config from './config.js'
 import { Sequelize } from 'sequelize';
 import User from '../database/models/user.js'
+import Credencial from '../database/models/credencial.js'
 
 const sequelize = new Sequelize(config.db.name, config.db.user, config.db.pass, {
   dialect: 'mysql',
@@ -17,7 +18,8 @@ try {
   console.error('Unable to connect to the database:', error);
 }
 const db = {
-  users: User(sequelize, Sequelize.DataTypes)
+  users: User(sequelize, Sequelize.DataTypes),
+  credenciales: Credencial(sequelize, Sequelize.DataTypes),
 }
 
 db.sequelize = sequelize;

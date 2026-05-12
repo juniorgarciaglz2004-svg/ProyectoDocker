@@ -19,8 +19,14 @@ export default {
     },
 
     appPort: process.env.APP_PORT,
-    seguridad: {secretKey:"unsecreto",usuario:"demo",pass:"pass",expiresIn: "1h" }
+
+    seguridad: {
+        secretKey:"unsecreto",
+        expiresIn: "1h",
+        saltRounds: 10
+    }
 };
+
 
 
 
