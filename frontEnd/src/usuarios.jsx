@@ -1,95 +1,106 @@
-import { useState, useEffect } from 'react'
-import { Link } from "react-router";
+import {useState, useEffect} from 'react'
+import {Link} from "react-router";
+import {useAuth} from './contexts/AuthContext';
+
 function Usuarios() {
-  const [loading, setLoading] = useState(true)
-  const [users, setUsers] = useState([]);
-  const [apiError, setApiError] = useState(false);
+    const [loading, setLoading] = useState(true)
+    const [users, setUsers] = useState([]);
+    const [apiError, setApiError] = useState(false);
+    const {logout} = useAuth();
 
 
+    useEffect(() => {
+        async function obtenerDatos() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(import.meta.env.VITE_API_URL + "/usuarios", {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
 
-  useEffect(() => {
-    async function obtenerDatos() {
-      try {
-        const response = await fetch(import.meta.env.VITE_API_URL + "/usuarios")
-        const data = await response.json();
+                if (response.status === 401) {
+                    logout();
+                    return;
+                }
 
-        setUsers(data);
-        
-      } catch (error) {
-        console.error("Error al obtener los usuarios:", error);
-        setApiError(true);
-      }
-setLoading(false);
+                const data = await response.json();
+                setUsers(data);
+
+            } catch (error) {
+                console.error("Error al obtener los usuarios:", error);
+                setApiError(true);
+            }
+            setLoading(false);
+        }
+
+        obtenerDatos();
+
+    }, []);
+
+    if (loading) {
+        return (
+            <div style={{textAlign: 'center', padding: '20px'}}>
+                <InicioPagina/>
+                <div className="spinner"></div>
+                <FinPagina/>
+            </div>
+        );
     }
 
-    obtenerDatos();
 
-  }, []);
+    if (apiError) {
+        return (
+            <div style={{textAlign: 'center', padding: '20px'}}>
+                <InicioPagina/>
+                <div> Error en el acceso al api remoto</div>
+                <FinPagina/>
+            </div>
+        );
+    }
 
-  if (loading) {
     return (
-      <div style={{ textAlign: 'center', padding: '20px' }}>
-        <InicioPagina />
-        <div className="spinner"></div>
-        <FinPagina />
-      </div>
-    );
-  }
-
-
-  if (apiError) {
-    return (
-      <div style={{ textAlign: 'center', padding: '20px' }}>
-        <InicioPagina />
-        <div> Error en el acceso al api remoto</div>
-        <FinPagina />
-      </div>
-    );
-  }
-
-  return (
-    <div>
-      <InicioPagina />
-      <table border="1" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-        <thead>
-          <tr style={{ backgroundColor: '#f2f2f2' }}>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Email</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.id}</td>
-              <td>{user.firstName}</td>
-              <td>{user.lastName}</td>
-              <td>{user.email}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <FinPagina />
-    </div>
-  )
+        <div>
+            <InicioPagina/>
+            <table border="1" style={{width: '100%', borderCollapse: 'collapse', textAlign: 'left'}}>
+                <thead>
+                <tr style={{backgroundColor: '#f2f2f2'}}>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Email</th>
+                </tr>
+                </thead>
+                <tbody>
+                {users.map((user) => (
+                    <tr key={user.id}>
+                        <td>{user.id}</td>
+                        <td>{user.firstName}</td>
+                        <td>{user.lastName}</td>
+                        <td>{user.email}</td>
+                    </tr>
+                ))}
+                </tbody>
+            </table>
+            <FinPagina/>
+        </div>
+    )
 }
 
 function InicioPagina() {
-  return (
-    <>
-      <h3>Listado de usuarios</h3>
-    </>
-  )
+    return (
+        <>
+            <h3>Listado de usuarios</h3>
+        </>
+    )
 }
 
 function FinPagina() {
-  return (
-    <>
-      <p>&nbsp;</p>
-      <Link to="/">Regresar a inicio</Link>
-    </>
-  )
+    return (
+        <>
+            <p>&nbsp;</p>
+        </>
+    )
 }
 
 export default Usuarios
