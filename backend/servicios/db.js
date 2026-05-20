@@ -4,7 +4,7 @@ import User from '../database/models/user.js'
 import Credencial from '../database/models/credencial.js'
 
 const sequelize = new Sequelize(config.db.name, config.db.user, config.db.pass, {
-  dialect: 'mysql',
+  dialect: 'mariadb',
   host: config.db.host,
   port: config.db.port
 });

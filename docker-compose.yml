@@ -4,7 +4,7 @@ services:
     container_name: backend
     build: ./backend
     ports:
-      - "3000:${APP_PORT}"
+      - "${APP_PORT}:${APP_PORT}"
     depends_on:
     
       bd:
@@ -42,11 +42,11 @@ services:
 
   bd:
     container_name: bd
-    image: mysql:8.0
+    image: mariadb:10.8.2
     ports:
      - "33306:${BD_PORT}"
     environment:
-      MYSQL_ROOT_PASSWORD: ${BD_PASS}
+      MARIADB_ROOT_PASSWORD: ${BD_PASS}
     volumes:
       - ./db/data:/var/lib/mysql
       - ./db/sql:/docker-entrypoint-initdb.d
@@ -64,8 +64,8 @@ services:
       - private
     labels:
       ofelia.enabled: "true"
-      ofelia.job-exec.backup.schedule: "0 */1 * * * *"
-      #ofelia.job-exec.backup.schedule: "0 0 2 * * *"      
+      #ofelia.job-exec.backup.schedule: "0 */1 * * * *"
+      ofelia.job-exec.backup.schedule: "0 */5 * * * *"      
       ofelia.job-exec.backup.command: "sh -c 'MYSQL_PWD=${BD_PASS} mysqldump -u ${BD_USER} ${BD_NOMBRE} > /backups/backup_$$(date +%Y%m%d_%H%M%S).sql'"
 
   ofelia:

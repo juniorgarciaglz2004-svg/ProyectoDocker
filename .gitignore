@@ -4,3 +4,4 @@ backend/package-lock.json
 db/node_modules
 db/package-lock.json
 db/data
+.env
