@@ -69,7 +69,7 @@ services:
       ofelia.job-exec.backup.command: "sh -c 'MYSQL_PWD=${BD_PASS} mysqldump -u ${BD_USER} ${BD_NOMBRE} > /backups/backup_$$(date +%Y%m%d_%H%M%S).sql'"
 
   ofelia:
-    image: mcuadros/ofelia:latest
+    image: mcuadros/ofelia:0.3
     container_name: backup 
     depends_on:
         bd:
